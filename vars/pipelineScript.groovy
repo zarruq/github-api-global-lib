@@ -24,6 +24,11 @@ def call(body) {
                     sh 'mvn -B -DskipTests clean package'
                 }
             }
+            stage('test') {
+                steps {
+                    sh 'echo "test"'
+                }
+            }
         }
     }
 }
