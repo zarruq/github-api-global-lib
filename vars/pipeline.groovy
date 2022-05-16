@@ -1,4 +1,4 @@
-def call(){
+def call(int buildNumber){
     pipeline {
         environment {
             registryCredential = 'k8sregistry'
