@@ -1,4 +1,9 @@
-def call(int buildNumber){
+def call(body) {
+
+    def pipelineParams= [:]
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = pipelineParams
+    body()
     pipeline {
         environment {
             registryCredential = 'k8sregistry'
