@@ -26,7 +26,7 @@ def call(body) {
             }
             stage('test') {
                 steps {
-                    sh 'echo $branch'
+                    sh 'echo ${branch}'
                 }
             }
         }
