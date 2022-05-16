@@ -3,7 +3,7 @@ def call(Map config=[:]) {
   def version
   def event = currentBuild?.getBuildCauses()[0]?.event?.event?.toString()
   def causeClass = currentBuild?.getBuildCauses()[0]?._class
-  if(event == "deploy-content-prod" && causeClass == "com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause") {
+  if(event == "deploy-content-prod" && causeClass == "com.cloudbees.jenkins.plugins.pipelineScript.events.EventTriggerCause") {
     application = currentBuild?.getBuildCauses()[0]?.event?.application?.toString()
     version = currentBuild?.getBuildCauses()[0]?.event?.version?.toString()
   } else {
