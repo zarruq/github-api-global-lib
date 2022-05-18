@@ -26,9 +26,13 @@ def call(body) {
             }
             stage('test') {
                 steps {
-                    sh """ echo ${pipelineParams.branch}  pipelineParams.branch """
+                    testEcho("""echo ${pipelineParams.branch}  pipelineParams.branch""")
                 }
             }
         }
     }
+}
+
+def testEcho(String echoString){
+    sh """ ${echoString} """
 }
