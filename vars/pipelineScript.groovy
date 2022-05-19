@@ -26,7 +26,7 @@ def call(body) {
             }
             stage('test') {
                 steps {
-                    testEcho("""echo ${pipelineParams.branch}  ${BUILD_NUMBER}""")
+                    testEcho("""echo ${pipelineParams.branch}  ${BUILD_NUMBER} ${env.REGISTRY_URL} ${REGISTRY_URL}""")
                 }
             }
         }
