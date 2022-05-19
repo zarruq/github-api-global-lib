@@ -39,10 +39,5 @@ def testEcho(String echoString){
 }
 
 def testEcho(String registryUrl,String second, String tag, String options, String context){
-    sh """ echo ${tag} ${registryUrl} """
-    sh """ echo ${registryUrl} """
-    sh """ echo ${test} """
-    sh """ echo ${options} """
-    sh """ echo ${context} """
     sh """ echo ${options} -t ${registryUrl}/${tag} ${context}  """
 }
