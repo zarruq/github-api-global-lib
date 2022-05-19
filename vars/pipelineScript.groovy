@@ -38,7 +38,7 @@ def testEcho(String echoString){
     sh """ ${echoString} """
 }
 
-def testEcho(String registryUrl,String second, String tag, String test, String options, String context){
+def testEcho(String registryUrl,String second, String tag, String options, String context){
     sh """ echo ${tag} ${registryUrl} """
     sh """ echo ${registryUrl} """
     sh """ echo ${test} """
