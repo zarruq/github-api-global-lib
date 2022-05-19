@@ -39,6 +39,6 @@ def testEcho(String echoString){
 }
 
 def testEcho(String branch, String registryUrl){
-    sh """ echo ${echoString} """
+    sh """ echo ${branch} """
     sh """ echo ${registryUrl} """
 }
