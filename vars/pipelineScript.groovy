@@ -27,7 +27,7 @@ def call(body) {
             }
             stage('test') {
                 steps {
-                    testEcho("""${pipelineParams.branch}""",  """${env.REGISTRY_URL} ${REGISTRY_URL}""")
+                    testEcho("""${pipelineParams.branch}""",  """${env.REGISTRY_URL} ${REGISTRY_URL}""", 'TEST')
                 }
             }
         }
@@ -38,7 +38,8 @@ def testEcho(String echoString){
     sh """ ${echoString} """
 }
 
-def testEcho(String branch, String registryUrl){
+def testEcho(String branch, String registryUrl, String test){
     sh """ echo ${branch} """
     sh """ echo ${registryUrl} """
+    sh """ echo ${test} """
 }
