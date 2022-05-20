@@ -30,6 +30,11 @@ def call(body) {
                     testEcho("""${env.REGISTRY_URL}""", '2nd' , """ABC XYZ ${pipelineParams.branch} ABC XYZ""", "fourth", '5th')
                 }
             }
+            stage('test B') {
+                steps {
+                    quoteTest('abc')
+                }
+            }
         }
     }
 }
@@ -40,4 +45,8 @@ def testEcho(String echoString){
 
 def testEcho(String registryUrl,String second, String tag, String options, String context){
     sh """ echo ${options} -t ${registryUrl}/${tag} ${context}  """
+}
+
+def quoteTest(abc){
+    sh ''' echo ${abc} \${abc} '''
 }
