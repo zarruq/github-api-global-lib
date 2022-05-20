@@ -48,5 +48,5 @@ def testEcho(String registryUrl,String second, String tag, String options, Strin
 }
 
 def quoteTest(abc){
-    sh ''' echo \${abc} '''
+    sh ''' echo "\${abc}" '''
 }
