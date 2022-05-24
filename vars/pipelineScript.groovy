@@ -8,7 +8,7 @@ def call(body) {
         environment {
             registryCredential = 'k8sregistry'
             JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
-            GIT_REPO_NAME = pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+            GIT_REPO_NAME = "${pipelineParams.appName} != null ? ${pipelineParams.appName} : ${env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
         }
         agent {
             docker {
