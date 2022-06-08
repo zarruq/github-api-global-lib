@@ -28,12 +28,12 @@ def call(body) {
                 }
             }
             stage('test') {
-                when {
-                    anyOf {
-                        branch 'master' ; branch 'develop'
-                        expresssion{env.IS_DEPLOY.toBoolean() == true}
+               when {
+                 anyOf {
+                     branch 'master'; branch 'develop'
+                     expression{env.IS_DEPLOY.toBoolean() == true}
+                       }
                     }
-                }
                 steps {
                     testEcho("""${env.REGISTRY_URL}""", '2nd' , """ABC XYZ ${pipelineParams.branch} ABC XYZ""", "fourth", '5th')
                 }
