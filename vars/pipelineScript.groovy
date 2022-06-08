@@ -8,6 +8,7 @@ def call(body) {
         environment {
             registryCredential = 'k8sregistry'
             JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
+            IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
         }
         agent {
             docker {
@@ -20,6 +21,12 @@ def call(body) {
         }
         stages {
             stage('Build') {
+                when {
+                    anyOf {
+                        branch 'master' ; branch 'develop'
+                        expresssion {env.IS_DEPLOY.toBoolean() == true}
+                    }
+                }
                 steps {
                     sh 'mvn -B -DskipTests clean package'
                 }
