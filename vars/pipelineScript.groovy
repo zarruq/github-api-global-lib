@@ -9,6 +9,7 @@ def call(body) {
             registryCredential = 'k8sregistry'
             JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
             GIT_REPO_NAME = "${pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
+            IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
         }
         agent {
             docker {
@@ -27,6 +28,12 @@ def call(body) {
                 }
             }
             stage('test') {
+                when {
+                    anyOf {
+                        branch 'master' ; branch 'develop'
+                        expresssion {env.IS_DEPLOY.toBoolean() == true}
+                    }
+                }
                 steps {
                     testEcho("""${env.REGISTRY_URL}""", '2nd' , """ABC XYZ ${pipelineParams.branch} ABC XYZ""", "fourth", '5th')
                 }
