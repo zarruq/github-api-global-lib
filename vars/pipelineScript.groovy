@@ -31,7 +31,7 @@ def call(body) {
                 when {
                     anyOf {
                         branch 'master' ; branch 'develop'
-                        expresssion {env.IS_DEPLOY.toBoolean() == true}
+                        expresssion{env.IS_DEPLOY.toBoolean() == true}
                     }
                 }
                 steps {
