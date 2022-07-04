@@ -9,6 +9,7 @@ def call(body) {
             registryCredential = 'k8sregistry'
             JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
             IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
+            GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
         }
         agent {
             docker {
@@ -29,6 +30,11 @@ def call(body) {
                 }
                 steps {
                     sh 'mvn -B -DskipTests clean package'
+                }
+            }
+            stage('Build') {
+                steps {
+                    sh '${env.GIT_REPO_NAME}'
                 }
             }
         }
