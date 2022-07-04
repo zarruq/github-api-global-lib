@@ -26,6 +26,7 @@ def call(body) {
                 steps {
                   //  sh 'mvn -B -DskipTests clean package'
                     sh "echo ${GIT_REPO_NAME}"
+                    sh "echo ${GIT_REPO_NAME2}"
                 }
             }
             stage('test') {
@@ -47,7 +48,7 @@ def call(body) {
             stage('print branch name') {
                 steps {
                     script {
-                    sh '${env.GIT_REPO_NAME2}'
+                    sh "echo ${env.GIT_REPO_NAME2}"
                     }
                 }
             }
