@@ -27,6 +27,8 @@ def call(body) {
                   //  sh 'mvn -B -DskipTests clean package'
                     sh "echo ${GIT_REPO_NAME}"
                     sh "echo ${GIT_REPO_NAME2}"
+                    sh "echo ${BRANCH_NAME}"
+                    sh "echo ${GIT_BRANCH}
                 }
             }
             stage('test') {
