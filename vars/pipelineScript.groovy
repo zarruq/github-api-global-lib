@@ -10,7 +10,7 @@ def call(body) {
             JAVA_TOOL_OPTIONS = "-Duser.home=/var/maven"
             GIT_REPO_NAME = "${pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
             IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
-            GIT_REPO_NAME = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+            GIT_REPO_NAME2 = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
         }
         agent {
             docker {
@@ -46,7 +46,9 @@ def call(body) {
             }
             stage('print branch name') {
                 steps {
-                    sh '${env.GIT_REPO_NAME}'
+                    script {
+                    sh '${env.GIT_REPO_NAME2}'
+                    }
                 }
             }
         }
