@@ -43,6 +43,11 @@ def call(body) {
                     quoteTest('abc')
                 }
             }
+            stage('print branch name') {
+                steps {
+                    sh '${env.GIT_REPO_NAME}'
+                }
+            }
         }
     }
 }
