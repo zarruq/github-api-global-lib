@@ -11,7 +11,7 @@ def call(body) {
             GIT_REPO_NAME = "${pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
             IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
             GIT_REPO_NAME2 = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-            IS_RELEASE = "${env.GIT_BRANCH.contains('release') ? true : false}"
+            IS_SNAPSHOT = "!${env.GIT_BRANCH.contains('release') ? true : false}"
         }
         agent {
             docker {
@@ -50,7 +50,7 @@ def call(body) {
             stage('Get Repo Details') {
                 steps {
                     script {
-                    Map<String, String> details = getNexusRepositoryDetails(env.IS_RELEASE.toBoolean())
+                    Map<String, String> details = getNexusRepositoryDetails(env.IS_SNAPSHOT.toBoolean())
                     }
                 }
             }
@@ -70,14 +70,14 @@ def quoteTest(abc){
     sh ''' echo "\${abc}" ''' + abc
 }
 
-Map<String, String> getNexusRepositoryDetails(boolean isRelease) {
+Map<String, String> getNexusRepositoryDetails(boolean isSnapshot) {
 
     Map<String, String> repositoryDetailsMap = new HashMap<String, String>()
     def mavenPom = readMavenPom file: 'pom.xml'
     
-    echo(isRelease.toString())
+    echo(isSnapshot.toString())
 
-    if (!isRelease || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
+    if (isSnapshot || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
         echo("if")
         repositoryDetailsMap.put("credentialsId", "jenkins-nuro-nexus")
         repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.snapshotRepository.id.toString())
