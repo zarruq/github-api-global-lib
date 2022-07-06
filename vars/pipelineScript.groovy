@@ -11,7 +11,7 @@ def call(body) {
             GIT_REPO_NAME = "${pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
             IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
             GIT_REPO_NAME2 = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-            IS_RELEASE = "${env.GIT_BRANCH.contain('release') ? true : false}"
+            IS_RELEASE = "${env.GIT_BRANCH.contains('release') ? true : false}"
         }
         agent {
             docker {
