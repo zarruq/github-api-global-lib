@@ -78,10 +78,12 @@ Map<String, String> getNexusRepositoryDetails(boolean isRelease) {
     echo(isRelease.toString())
 
     if (!isRelease || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
+        echo("if")
         repositoryDetailsMap.put("credentialsId", "jenkins-nuro-nexus")
         repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.snapshotRepository.id.toString())
         repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.snapshotRepository.url.toString())
     } else {
+        echo("else")
         repositoryDetailsMap.put("credentialsId", "jenkins-nero-release-nexus")
         repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.repository.id.toString())
         repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.repository.ur.toString())
