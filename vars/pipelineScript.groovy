@@ -75,7 +75,7 @@ Map<String, String> getNexusRepositoryDetails(boolean isRelease) {
     Map<String, String> repositoryDetailsMap = new HashMap<String, String>()
     def mavenPom = readMavenPom file: 'pom.xml'
     
-    echo(isRelease)
+    echo(isRelease.toString())
 
     if (!isRelease || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
         repositoryDetailsMap.put("credentialsId", "jenkins-nuro-nexus")
