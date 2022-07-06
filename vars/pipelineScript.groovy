@@ -11,6 +11,7 @@ def call(body) {
             GIT_REPO_NAME = "${pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
             IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
             GIT_REPO_NAME2 = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
+            IS_RELEASE = "${env.GIT_BRANCH.contain("release) ? true : false}"
         }
         agent {
             docker {
@@ -46,10 +47,10 @@ def call(body) {
                     quoteTest('abc')
                 }
             }
-            stage('print branch name') {
+            stage('Get Repo Details') {
                 steps {
                     script {
-                    sh "echo ${env.GIT_REPO_NAME2}"
+                    Map<String, String> details = getNexusRepositoryDetails(env.IS_RELEASE.toBoolean())
                     }
                 }
             }
@@ -67,4 +68,23 @@ def testEcho(String registryUrl,String second, String tag, String options, Strin
 
 def quoteTest(abc){
     sh ''' echo "\${abc}" ''' + abc
+}
+
+Map<String, String> getNexusRepositoryDetails(boolean isRelease) {
+
+    Map<String, String> repositoryDetailsMap = new HashMap<String, String>()
+    def mavenPom = readMavenPom file: 'pom.xml'
+    
+    echo(isRelease)
+
+    if (!isRelease || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
+        repositoryDetailsMap.put("credentialsId", "jenkins-nuro-nexus")
+        repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.snapshotRepository.id.toString())
+        repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.snapshotRepository.url.toString())
+    } else {
+        repositoryDetailsMap.put("credentialsId", "jenkins-nero-release-nexus")
+        repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.repository.id.toString())
+        repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.repository.ur.toString())
+    }
+    return repositoryDetailsMap;
 }
