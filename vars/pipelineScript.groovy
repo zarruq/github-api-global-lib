@@ -70,14 +70,14 @@ def quoteTest(abc){
     sh ''' echo "\${abc}" ''' + abc
 }
 
-Map<String, String> getNexusRepositoryDetails(boolean isSnapshot) {
+Map<String, String> getNexusRepositoryDetails(boolean isRelease) {
 
     Map<String, String> repositoryDetailsMap = new HashMap<String, String>()
     def mavenPom = readMavenPom file: 'pom.xml'
     
-    echo(isSnapshot.toString())
+    echo(isRelease.toString())
 
-    if (isSnapshot || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
+    if (isRelease || !mavenPom.version.endsWith('SNAPSHOT')) {
         echo("if")
         repositoryDetailsMap.put("credentialsId", "jenkins-nuro-nexus")
        // repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.snapshotRepository.id.toString())
