@@ -11,7 +11,7 @@ def call(body) {
             GIT_REPO_NAME = "${pipelineParams.appName != null ? pipelineParams.appName : env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')}"
             IS_DEPLOY = "${pipelineParams.isDeploy != null ? pipelineParams.isDeploy : false}"
             GIT_REPO_NAME2 = env.GIT_URL.replaceFirst(/^.*\/([^\/]+?).git$/, '$1')
-            IS_SNAPSHOT = "${!env.GIT_BRANCH.contains('release') ? true : false}"
+            IS_RELEASE = "${(env.GIT_BRANCH.contains('release') || env.GIT_BRANCH.contains('release'))}"
         }
         agent {
             docker {
@@ -50,7 +50,7 @@ def call(body) {
             stage('Get Repo Details') {
                 steps {
                     script {
-                    Map<String, String> details = getNexusRepositoryDetails(env.IS_SNAPSHOT.toBoolean())
+                    Map<String, String> details = getNexusRepositoryDetails(env.IS_RELEASE.toBoolean())
                     }
                 }
             }
@@ -80,13 +80,13 @@ Map<String, String> getNexusRepositoryDetails(boolean isSnapshot) {
     if (isSnapshot || (mavenPom.version.endsWith('SNAPSHOT') && mavenPom.artifactId.contains('common'))) {
         echo("if")
         repositoryDetailsMap.put("credentialsId", "jenkins-nuro-nexus")
-        repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.snapshotRepository.id.toString())
-        repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.snapshotRepository.url.toString())
+       // repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.snapshotRepository.id.toString())
+       // repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.snapshotRepository.url.toString())
     } else {
         echo("else")
         repositoryDetailsMap.put("credentialsId", "jenkins-nero-release-nexus")
-        repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.repository.id.toString())
-        repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.repository.ur.toString())
+      //  repositoryDetailsMap.put("repositoryId", mavenPom.distributionManagement.repository.id.toString())
+      //  repositoryDetailsMap.put("repositoryUrl", mavenPom.distributionManagement.repository.ur.toString())
     }
     return repositoryDetailsMap;
 }
